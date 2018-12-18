@@ -20,7 +20,10 @@ You can choose the folder where the file will be saved. A notification will pop 
 - Clicking on the notification will take you to the download location.
 
 # Building from the repo
-Clone the repository, then navigate to it on your terminal and run ```npm install```, once all the dependencies have finished downloading, run ```npm run dev ``` to test it, and ```npm run build ``` to build it for your platform.
+Clone the repository, then navigate to it on your terminal, run
+- ```npm install``` to download dependencies
+- ```npm run dev ``` for development
+- ```npm run build ``` to build it for your platform.
 
 ## Available audio formats
 * mp3
