@@ -6,16 +6,13 @@
 </h1>
 <br>
 YTDX or YouTube Downloader X is an application that allows you to download audio from YouTube videos.
-paste any valid video link into the URL bar and download the audio from the video. 
+Paste any valid video link into the URL bar and download the audio from the video.
 
-The audio can be saved as a mp3, flac, wav, ogg file.
-
-You can choose the folder where the file will be saved. A notification will pop up when the download is complete.
 
 # Instructions
 - Select a folder to save the downloaded file in. 
-- Get a valid YouTube video URL and paste it in the URL bar
-- Choose the desired audio format and click download. 
+- Get a valid YouTube video URL and paste it in the URL bar.
+- Choose the desired audio format and click download.
 - When the file is finished downloading you'll get a notification.
 - Clicking on the notification will take you to the download location.
 
@@ -24,7 +21,7 @@ Clone the repository, then navigate to it on your terminal, run
 - ```npm install``` to download dependencies
 - ```npm run dev ``` for development
 - ```npm run build ``` to build it for your platform.
-
+<br>
 ## Available audio formats
 * mp3
 * flac
