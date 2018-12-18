@@ -7,7 +7,7 @@
     <div v-else >Video title</div>
 
     <br>
-    <div class="progress" style="height: 20px;">
+    <div class="progress" style="height: 25px;">
       <div class="progress-bar" v-bind:class="{ 'progress-bar-striped': converting , 'progress-bar-animated': converting }" v-bind:style="{width: percent + '%'}" style="height: 100%;">
          <span v-if="!converting" class="font-weight-bold">{{ percent }} % </span>
          <span v-else class="font-weight-bold">Generating {{ audioFormat }} </span>
@@ -119,6 +119,7 @@ ffmpeg.setFfmpegPath(ffmpegPath);
         if(this.downloading || this.directory =='' || this.url == '' ){
           return
         }
+        this.percent = 0
         this.downloading = true
         const that = this
         const video = ytdl(this.url, {

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "author": "Aveek Saha <aveek.s98@gmail.com>",
   "homepage": "https://aveek-saha.github.io",
-  "description": "Download music from YouTube",
+  "description": "Download audio from YouTube videos",
   "license": "MIT",
   "main": "./dist/electron/main.js",
   "scripts": {
@@ -87,7 +87,7 @@
     "css-loader": "^0.28.11",
     "del": "^3.0.0",
     "devtron": "^1.4.0",
-    "electron": "^2.0.4",
+    "electron": "2.0.4",
     "electron-debug": "^1.5.0",
     "electron-devtools-installer": "^2.2.4",
     "electron-builder": "20.38.3",
