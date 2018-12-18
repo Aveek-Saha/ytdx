@@ -22,6 +22,7 @@ Clone the repository, then navigate to it on your terminal, run
 - ```npm run dev ``` for development
 - ```npm run build ``` to build it for your platform.
 <br>
+
 ## Available audio formats
 * mp3
 * flac
