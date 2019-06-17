@@ -1,6 +1,6 @@
 {
   "name": "YTDX",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Aveek Saha <aveek.s98@gmail.com>",
   "homepage": "https://aveek-saha.github.io",
   "description": "Download audio from YouTube videos",
@@ -69,6 +69,7 @@
     "popper.js": "^1.14.6",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
+    "youtube-playlist": "^1.0.2",
     "ytdl-core": "^0.28.2"
   },
   "devDependencies": {

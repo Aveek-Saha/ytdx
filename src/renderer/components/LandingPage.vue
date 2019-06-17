@@ -1,10 +1,21 @@
 <template>
   <div id="wrapper">
     <br>
-    <input type="text" style="width: 100%;" @change="checkURL" v-model="url" class="form-control " placeholder="URL" />
+    <input type="text" style="width: 100%;" @change="checkURL(url)" v-model="url" class="form-control " placeholder="URL" />
+    <br>
+    <div v-if="list != []">
+      <ul class="list-group">
+        <button type="button" class="list-group-item list-group-item-action" 
+        :disabled=" downloading || directory ==''  || item.url == ''"
+        v-for="(item , index) in list" :key="index"
+        @click="download(item.url)"><font-awesome-icon icon="file-download" ></font-awesome-icon>&nbsp;
+        {{item.name}}</button>
+      </ul>
+    </div>
+    <div v-else ></div>
     <br>
     <div v-if="name != '' "> {{ name }}</div>
-    <div v-else >Video title</div>
+    <div v-else-if="list == []" > Video title</div>
 
     <br>
     <div class="progress" style="height: 25px;">
@@ -21,7 +32,7 @@
       <label for="select"><font-awesome-icon :icon="['fas', 'music']"></font-awesome-icon>&nbsp; Format </label> &nbsp;  &nbsp;
       <b-form-select v-model="audioFormat" id="select" :options="options" class="custom-select my-1 mr-sm-2" style="width: 30%" /> &nbsp;
 
-      <button class="btn btn-hg btn-inverse" @click="download" :disabled=" downloading || directory ==''  || this.url == '' " ><font-awesome-icon icon="file-download" ></font-awesome-icon>&nbsp;Download</button> &nbsp; &nbsp;
+      <button class="btn btn-hg btn-inverse" @click="download(url)" :disabled=" downloading || directory ==''  || url == '' || playlist " ><font-awesome-icon icon="file-download" ></font-awesome-icon>&nbsp;Download</button> &nbsp; &nbsp;
       <button class="btn btn-hg btn-inverse" @click="folderSelect" :disabled="downloading"><font-awesome-icon icon="folder-open" ></font-awesome-icon>&nbsp;  Folder</button> 
     </div>
     <br>
@@ -40,6 +51,7 @@ const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
 const { remote } = require('electron')
 const storage = require('electron-json-storage');
+const ytlist = require('youtube-playlist');
 
 const dataPath = storage.getDataPath();
 ffmpeg.setFfmpegPath(ffmpegPath);
@@ -55,6 +67,9 @@ ffmpeg.setFfmpegPath(ffmpegPath);
         valid: false,
         directory: "",
         downloading: false,
+        playlist: false,
+        vidNumber: 0,
+        list: [],
         formats: [],
         name: "",
         converting: false,
@@ -83,19 +98,37 @@ ffmpeg.setFfmpegPath(ffmpegPath);
           });
         });
       },
-      checkURL() {
+      checkURL(link) {
         const that = this
         this.formats = []
-        if(ytdl.validateURL(this.url)){
-          const info = ytdl.getInfo(this.url, (err, data) =>{
-            console.log(data);
+        if(ytdl.validateURL(link)){
+          if(this.url.split("?")[0] != "https://www.youtube.com/playlist"){
+            this.playlist = false;
+            this.list = []
+
+          }
+          const info = ytdl.getInfo(link, (err, data) =>{
+            console.log(data.title);
             that.name = data.title
             data.formats.forEach(format => {
               if(format.resolution)
                 that.formats.push([format.container, format.resolution])
             });
           })
-          
+        }
+        else if(this.url.split("?")[0] == "https://www.youtube.com/playlist") {
+          this.playlist = true;
+          this.list = []
+          ytlist(link, ['url', 'name']).then(res => {
+            var videos = res.data.playlist;
+            videos.forEach(vid => {
+              that.list.push({
+                'name': vid.name,
+                'url': vid.url
+              });
+            });
+            console.log(that.list);
+          });
         }
       },
       checkDir() {
@@ -114,20 +147,24 @@ ffmpeg.setFfmpegPath(ffmpegPath);
         });
       },
       download (link) {
-        
-        this.checkURL()
-        if(this.downloading || this.directory =='' || this.url == '' ){
+        const that = this
+        this.checkURL(link)
+        if(this.downloading || this.directory =='' || link == '' ){
           return
         }
         this.percent = 0
         this.downloading = true
-        const that = this
-        const video = ytdl(this.url, {
+        const video = ytdl(link, {
           quality: "highestaudio",
           filter: (format) => format.container === 'mp4'
-          })
+        })
 
         video.pipe(fs.createWriteStream('video.mp4'))
+
+        video.on('error', function(err) {
+            console.log('an error happened: ' + err.message);
+            that.downloading = false
+        })
 
         video.on('progress', (chunkLength, downloaded, total) => {
           this.percent = parseInt((downloaded / total) * 100)
@@ -155,7 +192,7 @@ ffmpeg.setFfmpegPath(ffmpegPath);
             console.log('file has been converted successfully');
 
             fs.stat('video.mp4', function (err, stats) {
-              console.log(stats);//here we got all information of file in stats variable
+              // console.log(stats);//here we got all information of file in stats variable
 
               if (err) {
                   return console.error(err);
@@ -177,7 +214,8 @@ ffmpeg.setFfmpegPath(ffmpegPath);
             this.converting = false
           })
           // save to file <-- the new file I want -->
-          .saveToFile(this.directory + '/'+ this.name +'.' + this.audioFormat);
+          .saveToFile(this.directory + '/'+ this.name.replace(/[\/:*?"<>|│]/g, '_')
+ +'.' + this.audioFormat);
 
         })
       }
