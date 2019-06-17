@@ -16,10 +16,15 @@ Paste any valid video link into the URL bar and download the audio from the vide
 
 # Instructions
 - Select a folder to save the downloaded file in. 
-- Get a valid YouTube video URL and paste it in the URL bar.
+- Get a valid YouTube video or playlist URL and paste it in the URL bar.
 - Choose the desired audio format and click download.
 - When the file is finished downloading you'll get a notification.
 - Clicking on the notification will take you to the download location.
+
+# New Features/Changes (v1.1.0)
+- Now you can paste a playlist URL (copy the 'VIEW FULL PLAYLIST' link address)
+- The app will display a complete list of videos in the playlist for you to download
+- Just click on any video in the list to download it
 
 # Building from the repo
 Clone the repository, then navigate to it on your terminal, run
