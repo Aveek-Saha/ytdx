@@ -1,6 +1,6 @@
-const { app, BrowserWindow, nativeTheme } = require('electron')
-const path = require('path')
-const url = require('url')
+const { app, BrowserWindow } = require('electron');
+const path = require('path');
+const url = require('url');
 
 const isDev = require('electron-is-dev');
 
@@ -20,7 +20,7 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: true
         }
-    })
+    });
 
     win.loadURL(
         url.format({
@@ -28,21 +28,20 @@ function createWindow() {
             protocol: 'file:',
             slashes: true
         })
-    )
+    );
 
     // Open the DevTools only if app is in development
     // If in production, don't show.
-    if (isDev)
-        win.webContents.openDevTools()
+    if (isDev) win.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
-    createWindow()
+    createWindow();
     app.on('activate', function () {
-        if (BrowserWindow.getAllWindows().length === 0) createWindow()
-    })
-})
+        if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    });
+});
 
 app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') app.quit()
-})
+    if (process.platform !== 'darwin') app.quit();
+});
