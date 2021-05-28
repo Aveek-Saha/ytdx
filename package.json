@@ -31,6 +31,6 @@
     "@fortawesome/fontawesome-free": "^5.15.3",
     "bootstrap": "^5.0.0",
     "sirv-cli": "^1.0.0",
-    "sveltestrap": "^4.2.1"
+    "sveltestrap": "^5.0.0"
   }
 }
