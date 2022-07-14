@@ -40,6 +40,7 @@
 
           </div>
         </div>
+        <div>Current Selected directory</div>
         <div>Select destination forder to continue</div>
       </Container>
 </main>
